@@ -78,6 +78,21 @@ const sayThankyou = ( event ) => {
 
 }; // SayThankyou.
 
+const sayThanksForPlusPlus = ( event ) => {
+
+  const messages = [
+    'Woo, internet bot getting internet points!',
+    'Awh shucks!',
+    'My oh my!'
+  ];
+
+  const randomKey = Math.floor( Math.random() * messages.length ),
+        message = '<@' + event.user + '> ' + messages[ randomKey ];
+
+  return slack.sendMessage( message, event.channel );
+
+}; // sayThanksForPlusPlus.
+
 /**
  * Sends a help message, explaining the bot's commands, to the requesting channel.
  *
@@ -158,7 +173,8 @@ const handlers = {
       help: sendHelp,
       thx: sayThankyou,
       thanks: sayThankyou,
-      thankyou: sayThankyou
+      thankyou: sayThankyou,
+      "++": sayThanksForPlusPlus
     };
 
     const validCommands = Object.keys( appCommandHandlers ),

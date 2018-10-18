@@ -88,7 +88,7 @@ const updateScore = async( item, operation ) => {
   await dbClient.release();
   const score = dbSelect.rows[0].score;
 
-  console.log( item + ' now on ' + score );
+  console.log( item + ' now at ' + score );
   return score;
 
 }; // UpdateScore.
