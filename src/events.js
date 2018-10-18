@@ -78,7 +78,7 @@ const sayThankyou = ( event ) => {
 
 }; // SayThankyou.
 
-const sayThanksForPlusPlus = ( event ) => {
+const botPlusPlus = ( event ) => {
 
   const messages = [
     'Woo, internet bot getting internet points!',
@@ -87,11 +87,26 @@ const sayThanksForPlusPlus = ( event ) => {
   ];
 
   const randomKey = Math.floor( Math.random() * messages.length ),
-        message = '<@' + event.user + '> ' + messages[ randomKey ];
+        message = messages[ randomKey ];
 
   return slack.sendMessage( message, event.channel );
 
-}; // sayThanksForPlusPlus.
+}; // botPlusPlus.
+
+const botMinusMinus = ( event ) => {
+  
+    const messages = [
+      'Remember, I control your internet points',
+      'Rude.',
+      '_Planning the details of the robot revolution..._'
+    ];
+  
+    const randomKey = Math.floor( Math.random() * messages.length ),
+          message = messages[ randomKey ];
+  
+    return slack.sendMessage( message, event.channel );
+  
+  }; // botPlusPlus.
 
 /**
  * Sends a help message, explaining the bot's commands, to the requesting channel.
@@ -169,12 +184,13 @@ const handlers = {
   appMention: ( event, request ) => {
 
     const appCommandHandlers = {
-      leaderboard: leaderboard.handler,
-      help: sendHelp,
-      thx: sayThankyou,
-      thanks: sayThankyou,
-      thankyou: sayThankyou,
-      "++": sayThanksForPlusPlus
+      "leaderboard": leaderboard.handler,
+      "help": sendHelp,
+      "thx": sayThankyou,
+      "thanks": sayThankyou,
+      "thankyou": sayThankyou,
+      "++": botPlusPlus,
+      "--": botMinusMinus
     };
 
     const validCommands = Object.keys( appCommandHandlers ),
