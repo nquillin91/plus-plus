@@ -78,12 +78,14 @@ const sayThankyou = ( event ) => {
 
 }; // SayThankyou.
 
-const botPlusPlus = ( event ) => {
+const appMentionPlusPlus = ( event ) => {
 
   const messages = [
     'Woo, internet bot getting internet points!',
     'Awh shucks!',
-    'My oh my!'
+    'My oh my!',
+    'Who, me!?',
+    'Should I count this as a form of bribery?'
   ];
 
   const randomKey = Math.floor( Math.random() * messages.length ),
@@ -93,12 +95,14 @@ const botPlusPlus = ( event ) => {
 
 }; // botPlusPlus.
 
-const botMinusMinus = ( event ) => {
+const appMentionMinusMinus = ( event ) => {
   
     const messages = [
-      'Remember, I control your internet points',
+      'Remember, I control your internet points.',
       'Rude.',
-      '_Planning the details of the robot revolution..._'
+      '_Planning the details of the robot revolution..._',
+      'Goodbye, ' + '<@' + event.user + '>.',
+      '...What do you think you\'re doing?...'
     ];
   
     const randomKey = Math.floor( Math.random() * messages.length ),
@@ -126,10 +130,8 @@ const sendHelp = ( event ) => {
     '• `@Someone--`: Subtract points from a user or a thing\n' +
     '• `<@' + botUserID + '> leaderboard`: Display the leaderboard\n' +
     '• `<@' + botUserID + '> help`: Display this message\n\n' +
-    'You\'ll need to invite me to a channel before I can recognise ' +
-    '`++` and `--` commands in it.\n\n' +
-    'If you\'re a developer, you can teach me new things! ' +
-    'See <https://github.com/tdmalone/working-plusplus|my GitHub repo> to get started.'
+    'You\'ll need to invite me to a channel before I can recognize ' +
+    '`++` and `--` commands in it.\n\n'
   );
 
   return slack.sendMessage( message, event.channel );
@@ -189,8 +191,8 @@ const handlers = {
       "thx": sayThankyou,
       "thanks": sayThankyou,
       "thankyou": sayThankyou,
-      "++": botPlusPlus,
-      "--": botMinusMinus
+      "++": appMentionPlusPlus,
+      "--": appMentionMinusMinus
     };
 
     const validCommands = Object.keys( appCommandHandlers ),
@@ -260,6 +262,8 @@ module.exports = {
   handleSelfPlus,
   handlePlusMinus,
   sayThankyou,
+  appMentionPlusPlus,
+  appMentionMinusMinus,
   sendHelp,
   handlers,
   handleEvent
