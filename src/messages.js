@@ -167,5 +167,6 @@ const getRandomMessage = ( operation, item, score = 0 ) => {
 
 module.exports = {
   messages,
+  getMessageForIndividualScore,
   getRandomMessage
 };
