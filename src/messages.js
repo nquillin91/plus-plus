@@ -87,11 +87,8 @@ const getMessageForIndividualScore = (item, score) => {
     '*<item>* currently doens\'t have any karma points.';
   }
 
-  const plural = helpers.isPlural( score ) ? 's' : '',
-  max = chosenSet.length - 1,
-  random = Math.floor( Math.random() * max ),
-  message = chosenSet[ random ];
-
+  const plural = helpers.isPlural( score ) ? 's' : '';
+  
   const formattedMessage = format.replace( '<item>', helpers.maybeLinkItem( item ) )
   .replace( '<score>', score )
   .replace( '<plural>', plural );
