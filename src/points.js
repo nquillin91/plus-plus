@@ -44,7 +44,7 @@ const retrieveIndividualScore = async(item) => {
     return score;
   }
   
-  return "";
+  return false;
 };
 
 /**
