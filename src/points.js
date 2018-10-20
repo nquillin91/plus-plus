@@ -30,7 +30,7 @@ const retrieveIndividualScore = async(item) => {
   const query =  '\ SELECT score FROM ' + scoresTableName + ' WHERE item = \'' + item + '\' ' ;
 
   console.log('Query for score: ' + query);
-  
+
   const dbClient = await postgres.connect(),
   dbSelect = await dbClient.query( query )
 
@@ -40,6 +40,8 @@ const retrieveIndividualScore = async(item) => {
     const score = dbSelect.rows[0].score;
 
     console.log( item + ' is at ' + score );
+
+    return score;
   }
   
   return "";
