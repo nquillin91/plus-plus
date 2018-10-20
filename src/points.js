@@ -111,6 +111,7 @@ const updateScore = async( item, operation ) => {
 }; // UpdateScore.
 
 module.exports = {
+  retrieveIndividualScore,
   retrieveTopScores,
   updateScore
 };
