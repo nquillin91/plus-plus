@@ -61,7 +61,7 @@ const extractCommand = ( message, commands ) => {
  *                   (i.e. + or -).
  */
 const extractPlusMinusEventData = ( text ) => {
-  const data = text.match( /@([A-Za-z0-9]+?)>?\s*(\+{2}|-{2}|—{1})/ );
+  const data = text.match( /@([A-Za-z0-9]+?)>?\s*(\+{2}|-{2}|—{1}|karma{1}|Karma{1})/ );
 
   if ( ! data ) {
     return false;
@@ -69,7 +69,7 @@ const extractPlusMinusEventData = ( text ) => {
 
   return {
     item: data[1],
-    operation: data[2].substring( 0, 1 ).replace( '—', '-' )
+    operation: data[2].toLowerCase().substring( 0, 1 ).replace( '—', '-' ).replace('k', '=')
   };
 
 }; // ExtractPlusMinusEventData.

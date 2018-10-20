@@ -26,6 +26,23 @@ const scoresTableName = 'scores',
 
 const postgres = new pg.Pool( postgresPoolConfig );
 
+const retrieveIndividualScore = async(item) => {
+  const query =  '\ SELECT score FROM ' + scoresTableName + ' WHERE item = \'' + item + '\' ' ;
+
+  const dbClient = await postgres.connect(),
+  dbSelect = await dbClient.query( query )
+
+  await dbClient.release();
+
+  if (dbSelect.rows && dbSelect.rows[0]) {
+    const score = dbSelect.rows[0].score;
+
+    console.log( item + ' is at ' + score );
+  }
+  
+  return "";
+};
+
 /**
  * Retrieves all scores from the database, ordered from highest to lowest.
  *

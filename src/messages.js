@@ -78,6 +78,27 @@ messages[ operations.SELF ] = [
   }
 ];
 
+const getMessageForIndividualScore = (item, score) => {
+  let format = '';
+
+  if (score) {
+    format = '*<item>* is at <score> point<plural>.';
+  } else {
+    '*<item>* currently doens\'t have any karma points.';
+  }
+
+  const plural = helpers.isPlural( score ) ? 's' : '',
+  max = chosenSet.length - 1,
+  random = Math.floor( Math.random() * max ),
+  message = chosenSet[ random ];
+
+  const formattedMessage = format.replace( '<item>', helpers.maybeLinkItem( item ) )
+  .replace( '<score>', score )
+  .replace( '<plural>', plural );
+
+  return formattedMessage;
+}
+
 /**
  * Retrieves a random message from the given pool of messages.
  *
