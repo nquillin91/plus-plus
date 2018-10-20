@@ -29,6 +29,8 @@ const postgres = new pg.Pool( postgresPoolConfig );
 const retrieveIndividualScore = async(item) => {
   const query =  '\ SELECT score FROM ' + scoresTableName + ' WHERE item = \'' + item + '\' ' ;
 
+  console.log('Query for score: ' + query);
+  
   const dbClient = await postgres.connect(),
   dbSelect = await dbClient.query( query )
 
