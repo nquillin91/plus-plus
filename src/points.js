@@ -36,7 +36,7 @@ const retrieveIndividualScore = async(item) => {
 
   await dbClient.release();
 
-  if (dbSelect.rows && dbSelect.rows[0]) {
+  if (dbSelect.rows[0] && dbSelect.rows[0].score) {
     const score = dbSelect.rows[0].score;
 
     console.log( item + ' is at ' + score );
