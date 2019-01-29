@@ -181,7 +181,7 @@ const handlers = {
         // Extract the relevant data from the message text.
         const { item, operation } = helpers.extractPlusMinusEventData( eventItem );
 
-        if ( ! item || ! operation || alreadyBeenHandledItems.indexOf( item ) > 0) {
+        if ( ! item || ! operation || alreadyBeenHandledItems.indexOf( item ) >= 0) {
           promise = false;
         }
 
