@@ -170,6 +170,8 @@ const handlers = {
    */
   message: ( event ) => {
     var promises = [];
+    var alreadyBeenHandledItems = [];
+
     const eventItems = helpers.extractEvents( event.text );
     
     if ( eventItems ) {
@@ -182,22 +184,28 @@ const handlers = {
         if ( ! item || ! operation ) {
           promise = false;
         }
+
+        if ( alreadyBeenHandledItems.indexOf( item ) > 0) {
+          promise = false;
+        }
+
+        alreadyBeenHandledItems.push( item );
     
-        // Bail if the user is trying to ++ themselves...
-        if ( item === event.user && '+' === operation ) {
-          promise = handleSelfPlus( event.user, event.channel );
-        }
+        if ( ! promise ) {
+          // Bail if the user is trying to ++ themselves...
+          if ( item === event.user && '+' === operation ) {
+            promise = handleSelfPlus( event.user, event.channel );
+          }
 
-        // Check for the '=' operator, which is meant to just get a
-        // score for a user
-        if ( '=' === operation ) {
-          promise = handleRetrieveScore( item, event.channel );
-        }
-        
-        // Otherwise, let's go!
-        promise = handlePlusMinus( item, operation, event.channel );
+          // Check for the '=' operator, which is meant to just get a
+          // score for a user
+          if ( '=' === operation ) {
+            promise = handleRetrieveScore( item, event.channel );
+          }
+          
+          // Otherwise, let's go!
+          promise = handlePlusMinus( item, operation, event.channel );
 
-        if ( promise ) {
           promises.push( promise );
         }
       });
