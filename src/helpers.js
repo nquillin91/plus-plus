@@ -51,6 +51,23 @@ const extractCommand = ( message, commands ) => {
 }; // ExtractCommand.
 
 /**
+ * Gets all of the valid commands coming from a slack message
+ *
+ * @param {string} text The message text sent through in the event.
+ * @returns {array} An array of matches found, which represent multiple commands
+ *                  (ie, @user1 ++ @user2 --)
+ */
+const extractEvents = ( text ) => {
+  const data = text.match( new RegExp( /@([A-Za-z0-9]+?)>?\s*(\+{2}|-{2}|—{1}|karma{1}|Karma{1})/, 'g' ) );
+
+  if ( ! data ) {
+    return false;
+  }
+
+  return data;
+}; // ExtractPlusMinusEvents
+
+/**
  * Gets the user or 'thing' that is being spoken about, and the 'operation' being done on it.
  * We take the operation down to one character, and also support — due to iOS' replacement of --.
  *
@@ -224,6 +241,7 @@ const render = async( templatePath, context = {}, request = {}) => {
 
 module.exports = {
   extractCommand,
+  extractEvents,
   extractPlusMinusEventData,
   extractUserID,
   getTimeBasedToken,

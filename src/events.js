@@ -169,29 +169,45 @@ const handlers = {
    *                        Slack message back to the requesting channel.
    */
   message: ( event ) => {
-
-    // Extract the relevant data from the message text.
-    const { item, operation } = helpers.extractPlusMinusEventData( event.text );
-
-    if ( ! item || ! operation ) {
-      return false;
-    }
-
-    // Bail if the user is trying to ++ themselves...
-    if ( item === event.user && '+' === operation ) {
-      handleSelfPlus( event.user, event.channel );
-      return false;
-    }
-
-    // Check for the '=' operator, which is meant to just get a 
-    // score for a user
-    if ('=' === operation) {
-      return handleRetrieveScore(item, event.channel);
-    }
+    var promises = [];
+    const eventItems = helpers.extractEvents( event.text );
     
-    // Otherwise, let's go!
-    return handlePlusMinus( item, operation, event.channel );
+    if ( eventItems ) {
+      eventItems.forEach( function( eventItem ) {
+        let promise;
 
+        // Extract the relevant data from the message text.
+        const { item, operation } = helpers.extractPlusMinusEventData( eventItem );
+
+        if ( ! item || ! operation ) {
+          promise = false;
+        }
+    
+        // Bail if the user is trying to ++ themselves...
+        if ( item === event.user && '+' === operation ) {
+          promise = handleSelfPlus( event.user, event.channel );
+        }
+
+        // Check for the '=' operator, which is meant to just get a
+        // score for a user
+        if ( '=' === operation ) {
+          promise = handleRetrieveScore( item, event.channel );
+        }
+        
+        // Otherwise, let's go!
+        promise = handlePlusMinus( item, operation, event.channel );
+
+        if ( promise ) {
+          promises.push( promise );
+        }
+      });
+    }
+
+    if ( promises.length > 0 ) {
+      return Promise.all( promises );
+    } else {
+      return false;
+    }
   }, // Message event.
 
   /**
