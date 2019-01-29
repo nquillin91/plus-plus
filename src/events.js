@@ -176,22 +176,18 @@ const handlers = {
     
     if ( eventItems ) {
       eventItems.forEach( function( eventItem ) {
-        let promise;
+        let promise = true;
 
         // Extract the relevant data from the message text.
         const { item, operation } = helpers.extractPlusMinusEventData( eventItem );
 
-        if ( ! item || ! operation ) {
-          promise = false;
-        }
-
-        if ( alreadyBeenHandledItems.indexOf( item ) > 0) {
+        if ( ! item || ! operation || alreadyBeenHandledItems.indexOf( item ) > 0) {
           promise = false;
         }
 
         alreadyBeenHandledItems.push( item );
     
-        if ( ! promise ) {
+        if ( promise ) {
           // Bail if the user is trying to ++ themselves...
           if ( item === event.user && '+' === operation ) {
             promise = handleSelfPlus( event.user, event.channel );
