@@ -185,14 +185,15 @@ const handlers = {
           promise = false;
         }
 
+        // Bail if the user is trying to ++ themselves...
+        if ( item === event.user && '+' === operation ) {
+          promise = handleSelfPlus( event.user, event.channel );
+        }
+
         alreadyBeenHandledItems.push( item );
     
         if ( promise ) {
-          // Bail if the user is trying to ++ themselves...
-          if ( item === event.user && '+' === operation ) {
-            promise = handleSelfPlus( event.user, event.channel );
-          }
-
+          
           // Check for the '=' operator, which is meant to just get a
           // score for a user
           if ( '=' === operation ) {
