@@ -185,23 +185,27 @@ const handlers = {
           promise = false;
         }
 
-        // Bail if the user is trying to ++ themselves...
-        if ( item === event.user && '+' === operation ) {
-          promise = handleSelfPlus( event.user, event.channel );
-        }
-
         alreadyBeenHandledItems.push( item );
     
         if ( promise ) {
-          
-          // Check for the '=' operator, which is meant to just get a
-          // score for a user
-          if ( '=' === operation ) {
-            promise = handleRetrieveScore( item, event.channel );
+          let hasPlusPlusedSelf = false;
+
+           // Bail if the user is trying to ++ themselves...
+          if ( item === event.user && '+' === operation ) {
+            promise = handleSelfPlus( event.user, event.channel );
+            hasPlusPlusedSelf = true;
           }
           
-          // Otherwise, let's go!
-          promise = handlePlusMinus( item, operation, event.channel );
+          if ( ! hasPlusPlusedSelf ) {
+            // Check for the '=' operator, which is meant to just get a
+            // score for a user
+            if ( '=' === operation ) {
+              promise = handleRetrieveScore( item, event.channel );
+            }
+            
+            // Otherwise, let's go!
+            promise = handlePlusMinus( item, operation, event.channel );
+          }
 
           promises.push( promise );
         }
