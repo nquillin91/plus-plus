@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 /**
  * Handles incoming events, using Slack's Events API. See also send.js, which handles outgoing
  * messages sent back to Slack.
@@ -62,7 +63,7 @@ const handlePlusMinus = async( item, operation, channel ) => {
  */
 const handleRetrieveScore = async( item, channel ) => {
   const score = await points.retrieveIndividualScore( item ),
-        message = messages.getMessageForIndividualScore(item, score);
+        message = messages.getMessageForIndividualScore( item, score );
 
   return slack.sendMessage( message, channel );
 };
@@ -110,24 +111,24 @@ const appMentionPlusPlus = ( event ) => {
 
   return slack.sendMessage( message, event.channel );
 
-}; // botPlusPlus.
+};
 
 const appMentionMinusMinus = ( event ) => {
-  
-    const messages = [
-      'Remember, I control your internet points.',
-      'Rude.',
-      '_Planning the details of the robot revolution..._',
-      'Goodbye, ' + '<@' + event.user + '>.',
-      '...What do you think you\'re doing?...'
-    ];
-  
-    const randomKey = Math.floor( Math.random() * messages.length ),
-          message = messages[ randomKey ];
-  
-    return slack.sendMessage( message, event.channel );
-  
-  }; // botPlusPlus.
+
+  const messages = [
+    'Remember, I control your internet points.',
+    'Rude.',
+    '_Planning the details of the robot revolution..._',
+    'Goodbye, ' + '<@' + event.user + '>.',
+    '...What do you think you\'re doing?...'
+  ];
+
+  const randomKey = Math.floor( Math.random() * messages.length ),
+        message = messages[ randomKey ];
+
+  return slack.sendMessage( message, event.channel );
+
+};
 
 /**
  * Sends a help message, explaining the bot's commands, to the requesting channel.
@@ -145,6 +146,7 @@ const sendHelp = ( event ) => {
     'Sure, here\'s what I can do:\n\n' +
     '• `@Someone++`: Add points to a user or a thing\n' +
     '• `@Someone--`: Subtract points from a user or a thing\n' +
+    '• `@Someone karma`: Display the points for a user or a thing\n' +
     '• `<@' + botUserID + '> leaderboard`: Display the leaderboard\n' +
     '• `<@' + botUserID + '> help`: Display this message\n\n' +
     'You\'ll need to invite me to a channel before I can recognize ' +
@@ -169,11 +171,11 @@ const handlers = {
    *                        Slack message back to the requesting channel.
    */
   message: ( event ) => {
-    var promises = [];
-    var alreadyBeenHandledItems = [];
+    const promises = [];
+    const alreadyBeenHandledItems = [];
 
     const eventItems = helpers.extractEvents( event.text );
-    
+
     if ( eventItems ) {
       eventItems.forEach( function( eventItem ) {
         let promise = true;
@@ -181,28 +183,29 @@ const handlers = {
         // Extract the relevant data from the message text.
         const { item, operation } = helpers.extractPlusMinusEventData( eventItem );
 
-        if ( ! item || ! operation || alreadyBeenHandledItems.indexOf( item ) >= 0) {
+        if ( ! item || ! operation || 0 <= alreadyBeenHandledItems.indexOf( item ) ) {
           promise = false;
         }
 
         alreadyBeenHandledItems.push( item );
-    
+
         if ( promise ) {
           let hasPlusPlusedSelf = false;
 
-           // Bail if the user is trying to ++ themselves...
+          // Bail if the user is trying to ++ themselves...
           if ( item === event.user && '+' === operation ) {
             promise = handleSelfPlus( event.user, event.channel );
             hasPlusPlusedSelf = true;
           }
-          
+
           if ( ! hasPlusPlusedSelf ) {
+
             // Check for the '=' operator, which is meant to just get a
             // score for a user
             if ( '=' === operation ) {
               promise = handleRetrieveScore( item, event.channel );
             }
-            
+
             // Otherwise, let's go!
             promise = handlePlusMinus( item, operation, event.channel );
           }
@@ -212,7 +215,7 @@ const handlers = {
       });
     }
 
-    if ( promises.length > 0 ) {
+    if ( 0 < promises.length ) {
       return Promise.all( promises );
     } else {
       return false;
@@ -234,13 +237,13 @@ const handlers = {
   appMention: ( event, request ) => {
 
     const appCommandHandlers = {
-      "leaderboard": leaderboard.handler,
-      "help": sendHelp,
-      "thx": sayThankyou,
-      "thanks": sayThankyou,
-      "thankyou": sayThankyou,
-      "++": appMentionPlusPlus,
-      "--": appMentionMinusMinus
+      'leaderboard': leaderboard.handler,
+      'help': sendHelp,
+      'thx': sayThankyou,
+      'thanks': sayThankyou,
+      'thankyou': sayThankyou,
+      '++': appMentionPlusPlus,
+      '--': appMentionMinusMinus
     };
 
     const validCommands = Object.keys( appCommandHandlers ),
