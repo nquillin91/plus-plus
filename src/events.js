@@ -148,7 +148,6 @@ const sendHelp = ( event ) => {
     '• `@Someone--`: Subtract points from a user or a thing\n' +
     '• `@Someone karma`: Display the points for a user or a thing\n' +
     '• `<@' + botUserID + '> leaderboard`: Display the leaderboard\n' +
-    '• `<@' + botUserID + '> help`: Display this message\n\n' +
     'You\'ll need to invite me to a channel before I can recognize ' +
     '`++` and `--` commands in it.\n\n'
   );
